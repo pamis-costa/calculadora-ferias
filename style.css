@@ -1,0 +1,192 @@
+body {
+    background-image: url('seduc-banner.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; 
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #343a40;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.container {
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 40px;
+    border: none;
+    border-radius: 12px;
+    background-color: #fffffff5;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/bc/Bras%C3%A3o_do_Par%C3%A1.svg');
+    background-size: 400px; /* tamanho */
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15; /* ajustar a opacidade aqui!!! */
+    z-index: 0;
+    border-radius: 12px; 
+}
+
+.container > * {
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    position: relative;
+}
+
+.emoji-above-title {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 2em;
+ 
+}
+
+.emoji-title {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+
+    transform: translateY(-50%);
+    font-size: 1.2em;
+
+}
+
+p {
+    color: #434446;
+    margin-bottom: 30px;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    text-align: left;
+    color: #495057;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+input {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+input::placeholder {
+    color: #afafaf;
+    font-style: italic;
+
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+
+}
+
+button {
+    width: 50%;
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+button:active {
+    background-color: #1e7e34;
+    transform: translateY(0);
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.resultado {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: green;
+}
+
+.resultado.negativo {
+    color: red;
+}
+
+#statusCarregamento {
+    margin-top: 15px;
+    font-size: 14px;
+    color: gray;
+}
+
+#infoFuncionario {
+    margin-top: 20px;
+    font-size: 17px;
+    color: #0056b3;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.warning {
+    color: rgb(255, 38, 0);
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+/* Estilos do rodapé */
+footer {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.footer-text {
+    font-size: 0.8rem;
+    color: #070707;
+    margin: 0.1rem 0;
+    -webkit-text-stroke: #000000 0.4px;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verificador de Férias</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="imagem">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Bras%C3%A3o_do_Par%C3%A1.svg"
+          alt="imagem brasão"
+          width="90"
+          height="90"
+        />
+      </div>
+      <h1>Verificador de Férias 🌴🏖️</h1>
+      <p>
+        Insira as informações para verificar se o funcionário tem direito a
+        férias.
+      </p>
+      <form>
+        <div class="form-group">
+          <label for="codigo">Código do Funcionário:</label>
+          <input type="text" id="codigo" placeholder="Ex: 1001" />
+        </div>
+
+        <div class="form-group">
+          <label for="inicio">Início do Período Aquisitivo (dd/mm/aaaa):</label>
+          <input
+            type="text"
+            id="inicio"
+            placeholder="Ex: 01/09/2024"
+            oninput="formatDate(this)"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="solicitacao"
+            >Data de Solicitação de Férias (dd/mm/aaaa):</label
+          >
+          <input
+            type="text"
+            id="solicitacao"
+            placeholder="Ex: 07/08/2025"
+            oninput="formatDate(this)"
+          />
+        </div>
+
+        <button type="button" onclick="verificarFerias()" id="verificarBtn">
+          Verificar
+        </button>
+      </form>
+
+      <div class="results-area">
+        <div id="infoFuncionario"></div>
+        <div id="resultado"></div>
+        <div id="aviso" class="warning" style="display: none">
+          Atenção: Verificar a existência de L.I.P
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Base de funcionários embutida (SEU CÓDIGO JAVASCRIPT PERMANECE O MESMO)
+      window.funcionarios = [
+        { codigo: "1001", cargo: "PROFESSOR", categoria: "MAGISTERIO" },
+        { codigo: "1002", cargo: "VIGIA JK", categoria: "MAGISTERIO" },
+        {
+          codigo: "1003",
+          cargo: "ORIENTADOR APRENDIZAGEM/DOCENTE",
+          categoria: "MAGISTERIO",
+        },
+        {
+          codigo: "1004",
+          cargo: "COORD TV ESCOLA",
+          categoria: "ADMINISTRATIVO",
+        },
+        {
+          codigo: "1005",
+          cargo: "CESSAO POR CONVENIO",
+          categoria: "ADMINISTRATIVO",
+        },
+        // ... (coloque o resto da sua longa lista de funcionários aqui)...
+        {
+          codigo: "11429",
+          cargo: "DRE TEC CENSO E MATRICULA GESTAO GOV",
+          categoria: "ADMINISTRATIVO",
+        },
+      ];
+
+      function formatDate(input) {
+        let value = input.value.replace(/\D/g, "");
+        if (value.length > 2) {
+          value = value.substring(0, 2) + "/" + value.substring(2);
+        }
+        if (value.length > 5) {
+          value = value.substring(0, 5) + "/" + value.substring(5, 9);
+        }
+        input.value = value;
+      }
+
+      function verificarFerias() {
+        const avisoDiv = document.getElementById("aviso");
+        const codigo = document.getElementById("codigo").value.trim();
+        const inicioPeriodo = document.getElementById("inicio").value;
+        const solicitacao = document.getElementById("solicitacao").value;
+        const resultadoDiv = document.getElementById("resultado");
+        const infoFuncionarioDiv = document.getElementById("infoFuncionario");
+
+        // Limpa resultados anteriores
+        resultadoDiv.innerHTML = "";
+        infoFuncionarioDiv.innerHTML = "";
+        avisoDiv.style.display = "none";
+
+        // Validação de entrada
+        if (!codigo || !inicioPeriodo || !solicitacao) {
+          resultadoDiv.innerHTML = "Por favor, preencha todos os campos.";
+          resultadoDiv.className = "error";
+          return;
+        }
+
+        const funcionario = window.funcionarios.find(
+          (func) => func.codigo === codigo
+        );
+
+        if (funcionario) {
+          infoFuncionarioDiv.innerHTML = `<b>Cargo:</b> ${funcionario.cargo}<br><b>Categoria:</b> ${funcionario.categoria}`;
+          infoFuncionarioDiv.className = "info";
+          avisoDiv.style.display = "block"; // Mostra aviso apenas se o funcionário for encontrado
+        } else {
+          infoFuncionarioDiv.innerHTML =
+            "Funcionário não encontrado na base de dados.";
+          infoFuncionarioDiv.className = "error";
+          return;
+        }
+
+        const partesInicio = inicioPeriodo.split("/");
+        const dataInicio = new Date(
+          partesInicio[2],
+          partesInicio[1] - 1,
+          partesInicio[0]
+        );
+        const partesSolicitacao = solicitacao.split("/");
+        const dataSolicitacao = new Date(
+          partesSolicitacao[2],
+          partesSolicitacao[1] - 1,
+          partesSolicitacao[0]
+        );
+
+        if (
+          isNaN(dataInicio.getTime()) ||
+          isNaN(dataSolicitacao.getTime()) ||
+          partesInicio[2].length < 4 ||
+          partesSolicitacao[2].length < 4
+        ) {
+          resultadoDiv.innerHTML =
+            "Por favor, insira datas válidas no formato dd/mm/aaaa.";
+          resultadoDiv.className = "error";
+          avisoDiv.style.display = "none";
+          return;
+        }
+
+        const fimPeriodo = new Date(dataInicio);
+        fimPeriodo.setFullYear(fimPeriodo.getFullYear() + 1);
+
+        if (dataSolicitacao >= fimPeriodo) {
+          resultadoDiv.innerHTML =
+            "DIREITO A FÉRIAS: A data de solicitação é posterior ao fim do período aquisitivo.";
+          resultadoDiv.className = "success";
+        } else {
+          resultadoDiv.innerHTML =
+            "NÃO TEM DIREITO: A data de solicitação é anterior ao fim do período aquisitivo.";
+          resultadoDiv.className = "error";
+        }
+      }
+    </script>
+    <footer>
+      <p class="footer-text">© Versão 1.0</p>
+      <p class="footer-text">Criado por: ISAAC J. S. B.</p>
+      <p class="footer-text">
+        Desenvolvido por: GIULIANO L. A. F. / HENRIQUE BARBOSA
+      </p>
+    </footer>
+  </body>
+</html>
